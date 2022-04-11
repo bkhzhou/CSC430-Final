@@ -1,28 +1,28 @@
 <?php
-	session_start();
-	include ('dbconnect.php');
-	
-	$concertID = $_GET['concertID'];
+  session_start();
+  include ('dbconnect.php');
+  
+  $concertID = $_GET['concertID'];
 
-	if(isset($_SESSION['username'])){
-		$user = $_SESSION['username'];
-		$getAID = "SELECT account_ID FROM account WHERE username = ?";
-		$query = $conn->prepare($getAID);
-		$query->bind_param('s', $user);
-		$query->execute();
-		$result = $query->get_result();
-		$AID = $result->fetch_row();
-	} else {
-		header("Location: signin.html");
-	}
+  if(isset($_SESSION['username'])){
+    $user = $_SESSION['username'];
+    $getAID = "SELECT account_ID FROM account WHERE username = ?";
+    $query = $conn->prepare($getAID);
+    $query->bind_param('s', $user);
+    $query->execute();
+    $result = $query->get_result();
+    $AID = $result->fetch_row();
+  } else {
+    header("Location: signin.html");
+  }
 
-	$date = date("y-m-d");
-	if(isset($_POST['pay'])){
-		$needAID = intval($AID[0]);
-		$insertConcert = "INSERT INTO orders (account_ID, order_total,order_date) VALUES ($needAID,$price,$date)";
-		mysqli_query($conn,$insertConcert);
+  $date = date("y-m-d");
+  if(isset($_POST['pay'])){
+    $needAID = intval($AID[0]);
+    $insertConcert = "INSERT INTO orders (account_ID, order_total,order_date) VALUES ($needAID,$price,$date)";
+    mysqli_query($conn,$insertConcert);
 
-	}
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -151,7 +151,7 @@ tr:nth-child(even) {
 				</tr>
 				<?php 
 					$intConcertID = intval($concertID);
-					$showCart = "SELECT c.concert_name, c.concert_date, c.concert_loc, t.ticket_price ";
+					$showCart = "SELECT c.concert_ID, c.concert_name, c.concert_date, c.concert_loc, t.ticket_price ";
 					$showCart.= "FROM concert as c, tickets as t ";
 					$showCart.= "WHERE c.concert_ID = ? and t.concert_ID = ? "; 
 					$stmt = $conn->prepare($showCart);
@@ -163,13 +163,14 @@ tr:nth-child(even) {
 						while ($row = $result->fetch_assoc()){
 							echo '<tr><td>' . $row['concert_name'] . '</td><td>' . $row['concert_date'] . '</td><td>' . $row['concert_loc'] . '</td><td>' . $row['ticket_price'] . '</td>';
 							$price = $row['ticket_price'];
+              $cID = $row['concert_ID'];
 						}
 					}
 				?>
 			</table><br><br>
 			<p style="text-align:right">
-				<b>Total :</b> <?php echo $price ?> 
-				<br><button name="pay" type="submit" value="pay">Pay now</button>
+				<b>Total :</b> <?php echo $price . '
+				<br><button name="pay" type="submit" value="pay"><a href="paymentconfirmation.php?concert_ID='. $cID . '">Pay Now</a></button>' ?>
 			</p>
            </div>
         </div>
