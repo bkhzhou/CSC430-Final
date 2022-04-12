@@ -139,7 +139,7 @@ tr:nth-child(even) {
      <div class="row">
        <div class="col-md-12">
                   <div class="titlepage">
-                    <h2>Refund</h2>
+                    <h2>Purchase Successful</h2>
                   </div>
      </div>
   
