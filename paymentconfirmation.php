@@ -43,7 +43,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <!-- site metas -->
-  <title>Refund</title>
+  <title>Payment Success</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -139,7 +139,7 @@ tr:nth-child(even) {
      <div class="row">
        <div class="col-md-12">
                   <div class="titlepage">
-                    <h2>Purchase Successful</h2>
+                    <h2>Payment Success</h2>
                   </div>
      </div>
   
@@ -150,8 +150,7 @@ tr:nth-child(even) {
               <h2>Payment Success</h2>
               <p>You have successfully purchased a ticket!<br>
               You can view your tickets under your Order tab in Account.<br>
-              You will be redirected in 5 seconds.</p>
-              <?php header("Refresh:5; url=account.php"); ?>
+              <a href="account.php"><b>Click here to go back to your Account.</b></a></p>
            </div>
         </div>
       </div>
