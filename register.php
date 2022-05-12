@@ -1,17 +1,9 @@
 <?php
+	include ('dbconnect.php');
 	if (session_status() === PHP_SESSION_NONE) {
 		session_start();
 	}
-	$server = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "concertticketsalessystem";
-
 	
-	$conn = mysqli_connect($server,$username,$password,$dbname);
-	if($conn->connect_error){
-		die("Connection Failed: " . $conn->connect_error);
-	}
 	
 	$email = $_POST['email'];
 	$name = $_POST['name'];
