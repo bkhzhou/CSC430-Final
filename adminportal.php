@@ -148,7 +148,7 @@ tr:nth-child(even) {
         <label for="concert_loc">Concert Location (NY):</label>
         <input type="text" name="concert_loc" id="concert_loc">
       </p>
-      <input type="submit" value="Submit">
+      <input type="submit" value="Submit" name ="submit">
     </form>
   </div>
 
