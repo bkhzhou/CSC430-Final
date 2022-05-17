@@ -177,7 +177,7 @@ tr:nth-child(even) {
     </p>
   </div>
   
-  <div id="Orders" class="tabcontent">
+<div id="Orders" class="tabcontent">
     <h3>Your Past Orders</h3>
     <p>
       <table>
@@ -195,7 +195,7 @@ tr:nth-child(even) {
             $row = $stmt_result->fetch_assoc();
             $UID = $row['account_ID'];
             $accountID = intval($UID);
-            
+
             $userOrders = "SELECT o.order_ID, o.order_total, o.order_date FROM orders as o WHERE o.account_ID = ?";
             $stmt2 = $conn->prepare($userOrders);
             $stmt2->bind_param('i', $accountID);
@@ -203,11 +203,11 @@ tr:nth-child(even) {
             $stmt_result2 = $stmt2->get_result();
             if($stmt_result2->num_rows > 0){
               while($rows = $stmt_result2->fetch_assoc()) {
-                echo "<tr><td>" . $rows['order_ID'] . "</td><td>$" . $rows['order_total'] . "</td><td>" . $rows['order_date'] . '</td><td><button type="submit"><a href="refund.php?order_ID='.$rows['order_ID'].' ">Refund</a></button></td></tr>';
+                echo "<tr><td>" . $rows['order_ID'] . "</td><td>$" . $rows['order_total'] . "</td><td>" . $rows['order_date'] . '</td><td><button type="submit"><a href="refund.php?order_ID='.$rows['order_ID'].' ">Refund</a></button> </td><td><button type="submit"><a href="viewticket.php">View Ticket</a></button></td></tr>';
               }
             } else {
               echo "There are currently no orders for this account.";
-            }   
+            }
         }
       ?>
       </table>
