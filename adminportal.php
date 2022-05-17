@@ -131,6 +131,7 @@ tr:nth-child(even) {
 <!-- Tab links -->
 <div class="tab">
     <button class="tablinks" onclick="openTabs(event, 'Add Concert')" id = "defaultOpen">Add Concert</button>
+    <button class="tablinks" onclick="openTabs(event, 'Add Tickets')">Add Tickets</button>
   </div>
   <!-- Tab content -->
   <div id="Add Concert" class="tabcontent">
@@ -147,6 +148,42 @@ tr:nth-child(even) {
       <p>
         <label for="concert_loc">Concert Location (NY):</label>
         <input type="text" name="concert_loc" id="concert_loc">
+      </p>
+      <input type="submit" value="Submit" name ="submit">
+    </form>
+  </div>
+
+  <div id="Add Tickets" class="tabcontent">
+    <h3>Add Tickets</h3>
+    <table>
+      <tr>
+        <th>Concert ID</th>
+        <th>Concert Name</th>
+        <th>Concert Location</th>
+      </tr>
+      <?php
+        $listing = "SELECT * FROM concert";
+        $result = $conn->query($listing);
+
+        if($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()){
+            echo '<tr><td>' . $row['concert_ID'] . '</td><td>' . $row['concert_name'] . '</td><td>' . $row['concert_loc'] . '</td></tr>';
+          }
+        }
+      ?>
+    </table>
+    <form action="insertickets.php" method="POST">
+      <p>
+        <label for="concert_ID">Concert ID: </label>
+        <input type="text" name="concert_ID" id="concert_ID">
+      </p> 
+      <p>
+        <label for="ticket_seat">Insert Available Tickets:</label>
+        <input type="text" name="ticket_seat" id="ticket_seat">
+      </p> 
+      <p>
+        <label for="ticket_price">Insert Price per Ticket: </label>
+        <input type="text" name="ticket_price" id="ticket_price">
       </p>
       <input type="submit" value="Submit" name ="submit">
     </form>
