@@ -130,109 +130,26 @@ tr:nth-child(even) {
 
 <!-- Tab links -->
 <div class="tab">
-    <button class="tablinks" onclick="openTabs(event, 'Account Info')" id = "defaultOpen">Account Info</button>
-    <button class="tablinks" onclick="openTabs(event, 'Orders')">Orders</button>
-    <button class="tablinks" onclick="openTabs(event, 'Payment Info')">Payment Info</button>
-    <button class="tablinks" onclick="openTabs(event, 'Logout')"><a href="logout.php">Logout</a></button>
+    <button class="tablinks" onclick="openTabs(event, 'Add Concert')" id = "defaultOpen">Add Concert</button>
   </div>
-  
   <!-- Tab content -->
-  <div id="Account Info" class="tabcontent">
-    <h3>Account Information</h3>
-    <p>
-      <?php echo "<h2>Welcome, " . $_SESSION['username'] . "!</h2><br>";
-          $user = $_SESSION['username'];
-          $accEmail = "SELECT a.email FROM account as a WHERE username = ?";
-          $stmtE = $conn->prepare($accEmail);
-          $stmtE->bind_param("s", $user);
-          $stmtE->execute();
-          $stmtE_result = $stmtE->get_result();
-          if($stmtE_result->num_rows>0){
-            $emRow = $stmtE_result->fetch_assoc();
-            echo "Your current email is " . $emRow['email']; 
-          }
-          $stmtE->close();
-
-        $finduid = "SELECT a.account_ID FROM account as a WHERE username = ?";
-        $stmtF = $conn->prepare($finduid);
-        $stmtF->bind_param("s", $user);
-        $stmtF->execute();
-        $stmtF_result = $stmtF->get_result();
-        if($stmtF_result->num_rows>0){
-          $adminyn = $stmtF_result->fetch_assoc();
-          $adminexist = $adminyn['account_ID'];
-          $checkadmin = "SELECT ad.admin_ID FROM admin as ad WHERE account_ID = ?";
-          $stmtG = $conn->prepare($checkadmin);
-          $stmtG->bind_param("i", $adminexist);
-          $stmtG->execute();
-          $stmtG_result = $stmtG->get_result();
-          if($stmtG_result->num_rows>0){
-            echo "?> <br><a href=\"adminportal.php\">Admin</a> <?php";
-          }
-        }
-
-        $stmtF->close();
-        $stmtG->close();
-      ?>
-    </p>
-  </div>
-  
-  <div id="Orders" class="tabcontent">
-    <h3>Your Past Orders</h3>
-    <p>
-      <table>
-        <th>Order Number</th>
-        <th>Price</th>
-        <th>Order Date</th>
-      <?php
-        $user = $_SESSION['username'];
-        $accountIDsql = "SELECT a.account_ID from account as a WHERE username = ?";
-        $stmt = $conn->prepare($accountIDsql);
-        $stmt->bind_param("s", $user);
-        $stmt->execute();
-        $stmt_result = $stmt->get_result();
-        if($stmt_result->num_rows> 0){
-            $row = $stmt_result->fetch_assoc();
-            $UID = $row['account_ID'];
-            $accountID = intval($UID);
-            
-            $userOrders = "SELECT o.order_ID, o.order_total, o.order_date FROM orders as o WHERE o.account_ID = ?";
-            $stmt2 = $conn->prepare($userOrders);
-            $stmt2->bind_param('i', $accountID);
-            $stmt2->execute();
-            $stmt_result2 = $stmt2->get_result();
-            if($stmt_result2->num_rows > 0){
-              while($rows = $stmt_result2->fetch_assoc()) {
-                echo "<tr><td>" . $rows['order_ID'] . "</td><td>$" . $rows['order_total'] . "</td><td>" . $rows['order_date'] . '</td><td><button type="submit"><a href="refund.php?order_ID='.$rows['order_ID'].' ">Refund</a></button></td></tr>';
-              }
-            } else {
-              echo "There are currently no orders for this account.";
-            }   
-        }
-      ?>
-      </table>
+  <div id="Add Concert" class="tabcontent">
+    <h3>Add Concert</h3>
+    <form action="insertconcert.php" method="POST">
+      <p>
+        <label for="concert_date">Concert Date:</label>
+        <input type="date" name="concert_date" id="concert_date">
+      </p> 
+      <p>
+        <label for="concert_name">Concert Name:</label>
+        <input type="text" name="concert_name" id="concert_name">
+      </p> 
+      <p>
+        <label for="concert_loc">Concert Location (NY):</label>
+        <input type="text" name="concert_loc" id="concert_loc">
       </p>
-  </div>
-  
-  <div id="Payment Info" class="tabcontent">
-  <h3>Payment Information</h3>
-    <p>
-      <?php 
-          $user = $_SESSION['username'];
-          $accCredit = "SELECT a.credit_info FROM account as a WHERE a.username = ?";
-          $stmtC = $conn->prepare($accCredit);
-          $stmtC->bind_param("s", $user);
-          $stmtC->execute();
-          $stmtC_result = $stmtC->get_result();
-          if($stmtC_result->num_rows>0){
-            $cRow = $stmtC_result->fetch_assoc();
-            $credit_info = $cRow['credit_info'];
-            echo "Your current payment on file is XXXX-XXXX-" . substr($credit_info, -4); 
-          }
-          $stmtC->close();
-          mysqli_close($conn);
-      ?>
-    </p>
+      <input type="submit" value="Submit">
+    </form>
   </div>
 
   <script>
